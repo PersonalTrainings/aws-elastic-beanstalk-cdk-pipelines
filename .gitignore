@@ -1,1 +1,7 @@
 node_modules
+cdk.out
+*.d.ts
+*-demo.js
+*-stack.js
+*-stage.js
+*.test.js
