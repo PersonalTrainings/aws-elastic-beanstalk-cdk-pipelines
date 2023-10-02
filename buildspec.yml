@@ -4,3 +4,15 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
+  pre_build:
+    commands:
+      - npm i -g npm@latest
+      - npm install
+  build:
+    commands:
+      - npm ci
+      - npm run build
+      - npx cdk synth
+  post_build:
+    commands:
+      - npm test
