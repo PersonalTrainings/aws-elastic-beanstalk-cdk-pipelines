@@ -1,0 +1,44 @@
+digraph G {
+  # Arrows represent an "unlocks" relationship (opposite of dependency). So chosen
+  # because the layout looks more natural that way.
+  # To represent subgraph dependencies, subgraphs are represented by BEGIN/END nodes.
+  # To render: `dot -Tsvg CdkPipelineStackPipelineF78599D7.dot > graph.svg`, open in a browser.
+  node [shape="box"];
+"BEGIN Build" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Build" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Build.Synth";
+"Source.PersonalTrainings/aws-elastic-beanstalk-cdk-pipelines" -> "Build.Synth";
+"BEGIN Build" -> "Build.Synth";
+"Build.Synth" -> "END Build";
+"BEGIN UpdatePipeline" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END UpdatePipeline" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate";
+"Build.Synth" -> "UpdatePipeline.SelfMutate";
+"BEGIN UpdatePipeline" -> "UpdatePipeline.SelfMutate";
+"UpdatePipeline.SelfMutate" -> "END UpdatePipeline";
+"BEGIN Assets" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Assets" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Assets.FileAsset1";
+"UpdatePipeline.SelfMutate" -> "Assets.FileAsset1";
+"BEGIN Assets" -> "Assets.FileAsset1";
+"Assets.FileAsset1" -> "END Assets";
+"BEGIN Pre-Prod" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Pre-Prod" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate" -> "BEGIN Pre-Prod";
+"BEGIN Pre-Prod.WebService" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Pre-Prod.WebService" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Pre-Prod.WebService.Deploy";
+"Pre-Prod.WebService.Prepare" -> "Pre-Prod.WebService.Deploy";
+"Pre-Prod.WebService.Prepare";
+"Build.Synth" -> "Pre-Prod.WebService.Prepare";
+"Assets.FileAsset1" -> "Pre-Prod.WebService.Prepare";
+"BEGIN Pre-Prod.WebService" -> "Pre-Prod.WebService.Prepare";
+"Pre-Prod.WebService.Deploy" -> "END Pre-Prod.WebService";
+"BEGIN Pre-Prod" -> "BEGIN Pre-Prod.WebService";
+"END Pre-Prod.WebService" -> "END Pre-Prod";
+"BEGIN Source" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Source" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Source.PersonalTrainings/aws-elastic-beanstalk-cdk-pipelines";
+"BEGIN Source" -> "Source.PersonalTrainings/aws-elastic-beanstalk-cdk-pipelines";
+"Source.PersonalTrainings/aws-elastic-beanstalk-cdk-pipelines" -> "END Source";
+}
