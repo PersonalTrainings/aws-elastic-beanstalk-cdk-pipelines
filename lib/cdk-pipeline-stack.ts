@@ -3,6 +3,7 @@ import { Construct } from "constructs";
 import { Stack, StackProps } from "aws-cdk-lib";
 
 import { CdkEBStage } from "./eb-stage";
+import { BuildSpec } from "aws-cdk-lib/aws-codebuild";
 
 /**
  * The stack that defines the application pipeline
@@ -24,6 +25,17 @@ export class CdkPipelineStack extends Stack {
         installCommands: ["npm i -g npm@latest"],
         commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
+      synthCodeBuildDefaults: {
+        partialBuildSpec: BuildSpec.fromObject({
+          phases: {
+            install: {
+              "runtime-versions": {
+                nodejs: "18",
+              },
+            },
+          },
+        }),
+      },
     });
 
     // This is where we add the application stages
