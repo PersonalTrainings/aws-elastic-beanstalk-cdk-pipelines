@@ -25,6 +25,17 @@ export class CdkPipelineStack extends Stack {
         installCommands: ["npm i -g npm@latest"],
         commands: ["npm ci", "npm run build", "npx cdk synth"],
       }),
+      synthCodeBuildDefaults: {
+        partialBuildSpec: BuildSpec.fromObject({
+          phases: {
+            install: {
+              "runtime-versions": {
+                nodejs: "19",
+              },
+            },
+          },
+        }),
+      },
     });
 
     // This is where we add the application stages
